@@ -7,3 +7,4 @@
 .vs/ProjectSettings.json
 .vs/skyguy-atlas/FileContentIndex/d38aebb6-21b1-4e02-9923-53a95faec037.vsidx
 *.vsidx
+*.pyc
