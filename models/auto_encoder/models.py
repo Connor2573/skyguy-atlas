@@ -8,8 +8,6 @@ class Encoder(torch.nn.Module):
         super(Encoder, self).__init__()
         #encoder layers
         self.conv1 = torch.nn.Conv2d(in_channels=in_shape[0], out_channels=64, kernel_size=3, stride=1, padding=1)
-        #self.pool1 = torch.nn.MaxPool2d(kernel_size=3, stride=1, padding=1)
-        #self.batch1 = torch.nn.BatchNorm2d(num_features=64)
         self.dropout1 = torch.nn.Dropout()
 
         self.conv2 = torch.nn.Conv2d(in_channels=64, out_channels=32, kernel_size=3, stride=1, padding=1)
@@ -28,8 +26,6 @@ class Encoder(torch.nn.Module):
 
     def forward(self, x):
         out = self.conv1(x)
-        #out = self.pool1(out)
-        #out = self.batch1(out)
         out = self.activation(out)
         out = self.dropout1(out)
         
@@ -47,9 +43,9 @@ class Encoder(torch.nn.Module):
 
         flattened = self.flatten(out)
         self.mu = self.linear_mu(flattened)
-        self.log = self.linear_log(flattened)
+        self.log_var = self.linear_log(flattened)
         epsilon = torch.normal(mean=0., std=1., size=self.mu.size()).to(device)
-        out = self.mu + torch.exp(self.log / 2) * epsilon
+        out = self.mu + torch.exp(self.log_var / 2) * epsilon
         return out
 
     def kl_loss(self):
@@ -97,11 +93,11 @@ class Decoder(torch.nn.Module):
 
 
 class AE(torch.nn.Module):
-    def __init__(self, input_dims):
+    def __init__(self, input_dims, batch_size):
         super(AE, self).__init__()
         last_conv_layer_size = 8 #the size of the last encoder convolution
-        flattened_dim = last_conv_layer_size * input_dims[1] * input_dims[2]
-        shape = (last_conv_layer_size, input_dims[1], input_dims[2])
+        flattened_dim = batch_size * last_conv_layer_size * input_dims[1] * input_dims[2]
+        shape = (batch_size, last_conv_layer_size, input_dims[1], input_dims[2])
 
         self.encoder = Encoder(input_dims, flattened_dim)
         self.decoder = Decoder(flattened_dim, shape)

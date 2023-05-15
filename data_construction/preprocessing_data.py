@@ -12,4 +12,4 @@ def resizeImages(new_size):
             resized = image.resize(new_size)
             resized.save(os.path.join(pathToNew, filename))
 
-resizeImages((450, 300))
+resizeImages((300, 225))

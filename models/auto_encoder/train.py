@@ -4,10 +4,10 @@ from torchvision import datasets, models, transforms
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-epochs = 500
-x_size = 300
-y_size = 450
-batch_size = 1
+epochs = 10
+x_size = 225
+y_size = 300
+batch_size = 2
 
 def load_training(root_path, dir, batch_size):
 
@@ -17,28 +17,28 @@ def load_training(root_path, dir, batch_size):
     train_loader = torch.utils.data.DataLoader(data, batch_size=batch_size, shuffle=True)
     return train_loader
 
-#model = my_models.AE((3, x_size, y_size)).to(device)
-model = torch.load('./models/auto_encoder/mk1.pth')
+model = my_models.AE((3, x_size, y_size), batch_size).to(device)
+#model = torch.load('./models/auto_encoder/mk1.pth')
 
 loader = load_training('./datasets/', 'dataset1', batch_size)
 
-optimizer = torch.optim.Adam(model.parameters(), lr=.001)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-05)
 loss_fn = torch.nn.MSELoss()
 
 model.train()
 for epoch in range(epochs):
-    for batch in loader:
-        for image in batch[0]:
-            image = image.to(device)
+    for image_class in loader:
+        batch = image_class[0]
+        batch = batch.to(device)
 
-            optimizer.zero_grad()
-            prediction= model(image)
+        optimizer.zero_grad()
+        prediction= model(batch)
 
-            RMSE_loss = torch.sqrt(loss_fn(prediction, image))
-            kl_loss = model.encoder.kl_loss()
-            loss = RMSE_loss + kl_loss
-            loss.backward()
-            optimizer.step()
+        RMSE_loss = torch.sqrt(loss_fn(prediction, batch))
+        kld_loss = torch.mean(-0.5 * torch.sum(1 + model.encoder.log_var - model.encoder.mu ** 2 - model.encoder.log_var.exp()), dim = 0)
+        loss = RMSE_loss + kld_loss
+        loss.backward()
+        optimizer.step()
     print('Epoch ' + str(epoch) + ' has loss ' + str(loss.item()))
 
 print('saving whole model')

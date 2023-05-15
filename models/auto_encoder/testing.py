@@ -8,7 +8,7 @@ model = torch.load('./models/auto_encoder/mk1_decoder.pth')
 model.eval()
 
 my_input = torch.rand(125).to(device)
-image = model(my_input)
+image = model(my_input)[0]
 
 transform = T.ToPILImage()
 img = transform(image)
