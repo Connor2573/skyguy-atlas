@@ -1,8 +1,9 @@
 from PIL import Image
 import os
 
-pathToRaw = r'./datasets/raw_images/maps/'
-pathToNew = r'./datasets/dataset1/maps/'
+cat = 'maps'
+pathToRaw = r'./datasets/raw_images/' + cat + '/'
+pathToNew = r'./datasets/dataset1/' + cat + '/'
 
 def resizeImages(new_size):
     for filename in os.listdir(pathToRaw):
@@ -12,4 +13,4 @@ def resizeImages(new_size):
             resized = image.resize(new_size)
             resized.save(os.path.join(pathToNew, filename))
 
-resizeImages((300, 225))
+resizeImages((768, 512))

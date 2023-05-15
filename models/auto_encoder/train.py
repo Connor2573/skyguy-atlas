@@ -4,10 +4,10 @@ from torchvision import datasets, models, transforms
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-epochs = 10
-x_size = 225
-y_size = 300
-batch_size = 2
+epochs = 25
+x_size = 512
+y_size = 512
+batch_size = 4
 
 def load_training(root_path, dir, batch_size):
 
@@ -18,9 +18,8 @@ def load_training(root_path, dir, batch_size):
     return train_loader
 
 model = my_models.AE((3, x_size, y_size), batch_size).to(device)
-#model = torch.load('./models/auto_encoder/mk1.pth')
 
-loader = load_training('./datasets/', 'dataset1', batch_size)
+loader = load_training('./datasets/', 'dataset2', batch_size)
 
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-05)
 loss_fn = torch.nn.MSELoss()
@@ -34,8 +33,8 @@ for epoch in range(epochs):
         optimizer.zero_grad()
         prediction= model(batch)
 
-        RMSE_loss = torch.sqrt(loss_fn(prediction, batch))
-        kld_loss = torch.mean(-0.5 * torch.sum(1 + model.encoder.log_var - model.encoder.mu ** 2 - model.encoder.log_var.exp()), dim = 0)
+        RMSE_loss = torch.sqrt(loss_fn(batch, prediction))
+        kld_loss = torch.mean(-0.5 * torch.sum(1 + model.encoder.log_var - model.encoder.mu ** 2 - model.encoder.log_var.exp(), dim = 1), dim = 0)
         loss = RMSE_loss + kld_loss
         loss.backward()
         optimizer.step()
