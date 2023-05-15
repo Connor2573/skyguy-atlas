@@ -124,7 +124,7 @@ from torch.nn import functional as F
 from torch import Tensor
 from typing import *
 
-flatened_total_dim = 98304
+flatened_total_dim = 196608
 
 class BetaVAE(torch.nn.Module):
 
@@ -151,7 +151,7 @@ class BetaVAE(torch.nn.Module):
 
         modules = []
         if hidden_dims is None:
-            hidden_dims = [32, 64, 128, 256, 512, 1024]
+            hidden_dims = [32, 64, 128, 256, 512]
 
         # Build Encoder
         for h_dim in hidden_dims:

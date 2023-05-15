@@ -8,7 +8,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 epochs = 300
 x_size = 512
 y_size = 768
-batch_size = 64
+batch_size = 16
 
 def load_training(root_path, dir, batch_size):
 
@@ -18,7 +18,7 @@ def load_training(root_path, dir, batch_size):
     train_loader = torch.utils.data.DataLoader(data, batch_size=batch_size, shuffle=True)
     return train_loader
 
-model = my_models.BetaVAE(3, 300).to(device)
+model = my_models.BetaVAE(3, 300, hidden_dims = [32, 64, 128, 256, 512]).to(device)
 best_loss = 1.0
 print(summary(model, (3, x_size, y_size), device='cuda'))
 

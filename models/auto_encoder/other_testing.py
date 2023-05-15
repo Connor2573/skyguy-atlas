@@ -4,7 +4,7 @@ import torchvision.transforms as T
 import models
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = torch.load('./models/auto_encoder/mkO_best.pth')
+model = torch.load('./models/auto_encoder/mkO.pth')
 model.eval()
 
 def show_samples(samples=1):
