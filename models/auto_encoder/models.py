@@ -124,7 +124,7 @@ from torch.nn import functional as F
 from torch import Tensor
 from typing import *
 
-flatened_total_dim = 196608
+flatened_total_dim = 98304
 
 class BetaVAE(torch.nn.Module):
 

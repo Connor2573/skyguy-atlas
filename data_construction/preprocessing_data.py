@@ -13,4 +13,12 @@ def resizeImages(new_size):
             resized = image.resize(new_size)
             resized.save(os.path.join(pathToNew, filename))
 
-resizeImages((768, 512))
+def build_dataset():
+    for filename in os.listdir(pathToRaw):
+        f = os.path.join(pathToRaw, filename)
+        if os.path.isfile(f) and f.find(".jpg") != -1:
+            image = Image.open(f)
+            image.save(os.path.join(pathToNew, filename))
+
+#resizeImages((768, 512))
+build_dataset()
