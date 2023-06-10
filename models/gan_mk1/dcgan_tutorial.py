@@ -16,10 +16,10 @@ import matplotlib.animation as animation
 from IPython.display import HTML
 
 # Root directory for dataset
-dataroot = "./datasets/dataset3"
+dataroot = "./datasets/dataset1"
 
 # Number of workers for dataloader
-workers = 8
+workers = 4
 
 # Batch size during training
 batch_size = 128
@@ -38,7 +38,7 @@ nz = 500
 ngf = 256
 ndf = int(ngf/4)
 
-num_epochs = 100
+num_epochs = 10
 lr = 1e-5
 beta1 = 0.5
 
@@ -259,7 +259,7 @@ if __name__ == '__main__':
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
 
             iters += 1
-
+            
     plt.figure(figsize=(10,5))
     plt.title("Generator and Discriminator Loss During Training")
     plt.plot(G_losses,label="G")
@@ -292,6 +292,6 @@ if __name__ == '__main__':
     plt.title("Fake Images")
     plt.imshow(np.transpose(img_list[-1],(1,2,0)))
     plt.show()
-  
+    
     print('saving last model')
     torch.save(netG, './models/auto_encoder/mk1_generator.pth')
