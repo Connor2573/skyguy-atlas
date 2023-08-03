@@ -22,7 +22,7 @@ dataroot = "./datasets/dataset1"
 workers = 4
 
 # Batch size during training
-batch_size = 128
+batch_size = 64
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
@@ -32,13 +32,13 @@ image_size = 64
 nc = 3
 
 # Size of z latent vector (i.e. size of generator input)
-nz = 500
+nz = 1200
 
 #size of feature maps
 ngf = 256
 ndf = int(ngf/4)
 
-num_epochs = 10
+num_epochs = 300
 lr = 1e-5
 beta1 = 0.5
 

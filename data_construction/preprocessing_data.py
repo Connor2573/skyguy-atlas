@@ -20,5 +20,5 @@ def build_dataset():
             image = Image.open(f)
             image.save(os.path.join(pathToNew, filename))
 
-#resizeImages((768, 512))
-build_dataset()
+resizeImages((128, 128))
+#build_dataset()
